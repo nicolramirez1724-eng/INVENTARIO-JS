@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Produccion</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout-app">
+    <app-header id="header-app"></app-header>
+    <main class="contenido-app" id="contenido-app"></main>
+  </div>
+
+  <app-toast></app-toast>
+
+  <confirm-dialog id="dialogo-confirmar"></confirm-dialog>
+
+  <app-modal id="modal-usuario">
+    <div class="modal-caja">
+      <div class="modal-encabezado">
+        <h3 class="modal-titulo"></h3>
+        <button type="button" class="modal-cerrar">&times;</button>
+      </div>
+      <form id="formulario-usuario">
+        <input type="hidden" id="usuario-identificacion-original">
+        <div class="formulario-grid">
+          <div class="campo">
+            <label for="usuario-identificacion">Numero de identificacion</label>
+            <input type="text" id="usuario-identificacion" required>
+          </div>
+          <div class="campo">
+            <label for="usuario-cargo">Cargo</label>
+            <input type="text" id="usuario-cargo" required>
+          </div>
+          <div class="campo campo-ancho">
+            <label for="usuario-nombre">Nombre completo</label>
+            <input type="text" id="usuario-nombre" required>
+          </div>
+          <div class="campo">
+            <label for="usuario-password">Contraseña</label>
+            <input type="password" id="usuario-password" minlength="4">
+          </div>
+          <div class="campo">
+            <label for="usuario-password-confirmar">Confirmar contraseña</label>
+            <input type="password" id="usuario-password-confirmar" minlength="4">
+          </div>
+          <div class="campo campo-ancho error-campo" id="usuario-error"></div>
+        </div>
+        <div class="acciones-formulario">
+          <button type="submit" class="boton boton-primario">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </app-modal>
+
+  <app-modal id="modal-producto">
+    <div class="modal-caja">
+      <div class="modal-encabezado">
+        <h3 class="modal-titulo"></h3>
+        <button type="button" class="modal-cerrar">&times;</button>
+      </div>
+      <form id="formulario-producto">
+        <input type="hidden" id="producto-codigo-original">
+        <div class="formulario-grid">
+          <div class="campo">
+            <label for="producto-codigo">Codigo</label>
+            <input type="text" id="producto-codigo" required>
+          </div>
+          <div class="campo">
+            <label for="producto-nombre">Nombre</label>
+            <input type="text" id="producto-nombre" required>
+          </div>
+          <div class="campo campo-ancho">
+            <label for="producto-proveedor">Proveedor</label>
+            <input type="text" id="producto-proveedor" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label>
+            <input type="checkbox" id="producto-tiene-formula">
+            Este producto se fabrica a partir de una formula
+          </label>
+        </div>
+        <div id="seccion-formula" class="oculto">
+          <label>Formula (materia prima requerida)</label>
+          <div id="filas-formula"></div>
+          <button type="button" id="agregar-fila-formula" class="boton boton-secundario">Agregar materia prima</button>
+        </div>
+        <div class="campo error-campo" id="producto-error"></div>
+        <div class="acciones-formulario">
+          <button type="submit" class="boton boton-primario">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </app-modal>
+
+  <app-modal id="modal-ingreso-stock">
+    <div class="modal-caja">
+      <div class="modal-encabezado">
+        <h3 class="modal-titulo"></h3>
+        <button type="button" class="modal-cerrar">&times;</button>
+      </div>
+      <form id="formulario-ingreso-stock">
+        <div class="campo">
+          <label for="ingreso-codigo">Codigo del producto</label>
+          <select id="ingreso-codigo" required></select>
+        </div>
+        <div class="campo">
+          <label for="ingreso-cantidad">Cantidad a ingresar</label>
+          <input type="number" id="ingreso-cantidad" min="1" step="1" required>
+        </div>
+        <div class="campo error-campo" id="ingreso-error"></div>
+        <div class="acciones-formulario">
+          <button type="submit" class="boton boton-primario">Ingresar al inventario</button>
+        </div>
+      </form>
+    </div>
+  </app-modal>
+
+  <app-modal id="modal-resumen-produccion">
+    <div class="modal-caja">
+      <div class="modal-encabezado">
+        <h3 class="modal-titulo"></h3>
+        <button type="button" class="modal-cerrar">&times;</button>
+      </div>
+      <div id="contenido-resumen-produccion"></div>
+    </div>
+  </app-modal>
+
+  <script src="js/storage.js"></script>
+  <script src="js/crypto.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components/app-toast.js"></script>
+  <script src="js/components/confirm-dialog.js"></script>
+  <script src="js/components/app-modal.js"></script>
+  <script src="js/components/data-table.js"></script>
+  <script src="js/components/app-header.js"></script>
+  <script src="js/modules/usuarios.js"></script>
+  <script src="js/modules/inventario.js"></script>
+  <script src="js/modules/produccion.js"></script>
+  <script src="js/main-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Produccion - Ingreso</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="pantalla-auth">
+    <div class="tarjeta-auth">
+      <form id="formulario-login">
+        <h1>Acme Produccion</h1>
+        <p class="subtitulo">Ingresa con tu numero de identificacion y contraseña</p>
+        <div class="campo">
+          <label for="login-identificacion">Numero de identificacion</label>
+          <input type="text" id="login-identificacion" required>
+        </div>
+        <div class="campo">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" required>
+          <div class="error-campo" id="login-error"></div>
+        </div>
+        <button type="submit" class="boton boton-primario">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <app-toast></app-toast>
+
+  <script src="js/storage.js"></script>
+  <script src="js/crypto.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components/app-toast.js"></script>
+  <script src="js/main-login.js"></script>
+</body>
+</html>

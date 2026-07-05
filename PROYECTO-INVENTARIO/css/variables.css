@@ -1,0 +1,18 @@
+:root {
+  --color-primario: #b5461c;
+  --color-primario-oscuro: #8f3714;
+  --color-secundario: #2f6b4f;
+  --color-fondo: #f6f1ea;
+  --color-superficie: #ffffff;
+  --color-texto: #2c2420;
+  --color-texto-suave: #6b5f56;
+  --color-borde: #e0d5c7;
+  --color-peligro: #b3261e;
+  --color-exito: #2f6b4f;
+  --radio: 10px;
+  --sombra: 0 2px 10px rgba(44, 36, 32, 0.08);
+  --espacio-1: 8px;
+  --espacio-2: 16px;
+  --espacio-3: 24px;
+  --espacio-4: 32px;
+}

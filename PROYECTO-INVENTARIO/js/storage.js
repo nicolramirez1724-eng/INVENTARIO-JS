@@ -1,0 +1,103 @@
+const BASE_URL = 'https://stock-flow-55dd7-default-rtdb.firebaseio.com';
+
+async function getUsuarios() {
+  const respuesta = await fetch(`${BASE_URL}/usuarios.json`);
+  const datos = await respuesta.json();
+  return datos ? Object.values(datos) : [];
+}
+
+async function guardarUsuario(usuario) {
+  await fetch(`${BASE_URL}/usuarios/${usuario.identificacion}.json`, {
+    method: 'PUT',
+    body: JSON.stringify(usuario)
+  });
+}
+
+async function eliminarUsuarioDB(identificacion) {
+  await fetch(`${BASE_URL}/usuarios/${identificacion}.json`, {
+    method: 'DELETE'
+  });
+}
+
+async function getProductos() {
+  const respuesta = await fetch(`${BASE_URL}/productos.json`);
+  const datos = await respuesta.json();
+  return datos || {};
+}
+
+async function guardarProducto(producto) {
+  await fetch(`${BASE_URL}/productos/${producto.codigo}.json`, {
+    method: 'PUT',
+    body: JSON.stringify(producto)
+  });
+}
+
+async function eliminarProductoDB(codigo) {
+  await fetch(`${BASE_URL}/productos/${codigo}.json`, {
+    method: 'DELETE'
+  });
+}
+
+async function getProducciones() {
+  const respuesta = await fetch(`${BASE_URL}/producciones.json`);
+  const datos = await respuesta.json();
+  return datos ? Object.values(datos) : [];
+}
+
+async function guardarProduccion(registro) {
+  await fetch(`${BASE_URL}/producciones/${registro.id}.json`, {
+    method: 'PUT',
+    body: JSON.stringify(registro)
+  });
+}
+
+async function siguienteConsecutivo() {
+  const respuesta = await fetch(`${BASE_URL}/configuracion/consecutivo.json`);
+  const actual = await respuesta.json();
+  const siguiente = (actual || 0) + 1;
+  await fetch(`${BASE_URL}/configuracion/consecutivo.json`, {
+    method: 'PUT',
+    body: JSON.stringify(siguiente)
+  });
+  return siguiente;
+}
+
+function getSesion() {
+  const dato = localStorage.getItem('acme_sesion');
+  return dato ? JSON.parse(dato) : null;
+}
+
+function guardarSesion(sesion) {
+  localStorage.setItem('acme_sesion', JSON.stringify(sesion));
+}
+
+function limpiarSesion() {
+  localStorage.removeItem('acme_sesion');
+}
+
+async function sembrarDatosIniciales() {
+  const productos = await getProductos();
+  if (Object.keys(productos).length === 0) {
+    const productosIniciales = [
+      { codigo: 'HARINA', nombre: 'Harina', proveedor: 'Molinos Macondo', stock: 5000, receta: null },
+      { codigo: 'MANTEQUILLA', nombre: 'Mantequilla', proveedor: 'Lacteos del Valle', stock: 3000, receta: null },
+      { codigo: 'HUEVO', nombre: 'Huevo', proveedor: 'Granja San Jose', stock: 200, receta: null },
+      {
+        codigo: 'COD_001',
+        nombre: 'Galleta Chocolate',
+        proveedor: 'Acme Corp',
+        stock: 50,
+        receta: { HARINA: 100, MANTEQUILLA: 100, HUEVO: 1 }
+      }
+    ];
+    for (const producto of productosIniciales) {
+      await guardarProducto(producto);
+    }
+  }
+
+  const usuarios = await getUsuarios();
+  if (usuarios.length === 0) {
+    const passwordHash = await hashTexto('admin123');
+    await guardarUsuario({ identificacion: 'admin', nombre: 'Administrador Acme', cargo: 'Administrador', passwordHash });
+  }
+}
