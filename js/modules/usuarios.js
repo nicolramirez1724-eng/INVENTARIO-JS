@@ -84,7 +84,16 @@ async function renderUsuarios(contenedor) {
     const password = document.getElementById('usuario-password').value;
     const passwordConfirmar = document.getElementById('usuario-password-confirmar').value;
 
+    if (!identificacion || !nombre || !cargo) {
+      errorEl.textContent = 'Completa todos los campos';
+      return;
+    }
+
     if (password || passwordConfirmar) {
+      if (!password.trim()) {
+        errorEl.textContent = 'La contrasena no puede estar vacia ni tener solo espacios';
+        return;
+      }
       if (password !== passwordConfirmar) {
         errorEl.textContent = 'Las contrasenas no coinciden';
         return;

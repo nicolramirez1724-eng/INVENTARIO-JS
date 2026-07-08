@@ -22,6 +22,14 @@ async function renderProduccion(contenedor) {
     </div>
   `;
 
+  function normalizarReceta(receta) {
+    if (!receta) return null;
+    if (Array.isArray(receta)) {
+      return receta.filter(item => item && item.codigo);
+    }
+    return Object.entries(receta).map(([codigo, cantidad]) => ({ codigo, cantidad }));
+  }
+
   const selectProducto = contenedor.querySelector('#produccion-producto');
   const inputCantidad = contenedor.querySelector('#produccion-cantidad');
   const errorEl = contenedor.querySelector('#produccion-error');
@@ -66,28 +74,29 @@ async function renderProduccion(contenedor) {
 
     const productos = await getProductos();
     const producto = productos[codigo];
+    const receta = producto ? normalizarReceta(producto.receta) : null;
 
-    if (!producto || !producto.receta) {
+    if (!producto || !receta) {
       errorEl.textContent = 'El producto seleccionado no tiene una formula valida';
       return;
     }
 
-    for (const [codigoMateriaPrima, cantidadPorUnidad] of Object.entries(producto.receta)) {
-      const requerido = cantidadPorUnidad * cantidad;
-      const materia = productos[codigoMateriaPrima];
+    for (const item of receta) {
+      const requerido = item.cantidad * cantidad;
+      const materia = productos[item.codigo];
       if (!materia || materia.stock < requerido) {
-        errorEl.textContent = `Stock insuficiente de ${materia ? materia.nombre : codigoMateriaPrima}`;
+        errorEl.textContent = `Stock insuficiente de ${materia ? materia.nombre : item.codigo}`;
         return;
       }
     }
 
     const materiaPrimaUsada = [];
-    for (const [codigoMateriaPrima, cantidadPorUnidad] of Object.entries(producto.receta)) {
-      const cantidadUsada = cantidadPorUnidad * cantidad;
-      const materia = productos[codigoMateriaPrima];
+    for (const item of receta) {
+      const cantidadUsada = item.cantidad * cantidad;
+      const materia = productos[item.codigo];
       materia.stock -= cantidadUsada;
       await guardarProducto(materia);
-      materiaPrimaUsada.push({ codigo: codigoMateriaPrima, cantidad: cantidadUsada });
+      materiaPrimaUsada.push({ codigo: item.codigo, cantidad: cantidadUsada });
     }
 
     producto.stock += cantidad;

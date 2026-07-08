@@ -110,8 +110,11 @@ async function renderInventario(contenedor) {
     if (producto.receta) {
       checkFormula.checked = true;
       seccionFormula.classList.remove('oculto');
-      for (const [codigo, cantidad] of Object.entries(producto.receta)) {
-        await crearFilaFormula(codigo, cantidad);
+      const receta = Array.isArray(producto.receta)
+        ? producto.receta.filter(item => item && item.codigo)
+        : Object.entries(producto.receta).map(([codigo, cantidad]) => ({ codigo, cantidad }));
+      for (const item of receta) {
+        await crearFilaFormula(item.codigo, item.cantidad);
       }
     } else {
       checkFormula.checked = false;
@@ -138,6 +141,11 @@ async function renderInventario(contenedor) {
     const proveedor = document.getElementById('producto-proveedor').value.trim();
     const productos = await getProductos();
 
+    if (!codigo || !nombre || !proveedor) {
+      errorProducto.textContent = 'Completa todos los campos';
+      return;
+    }
+
     if (!codigoOriginal && productos[codigo]) {
       errorProducto.textContent = 'Ya existe un producto con ese codigo';
       return;
@@ -145,7 +153,7 @@ async function renderInventario(contenedor) {
 
     let receta = null;
     if (checkFormula.checked) {
-      receta = {};
+      receta = [];
       const filas = filasFormula.querySelectorAll('.fila-receta');
       for (const fila of filas) {
         const codigoMateriaPrima = fila.querySelector('.select-materia-prima').value;
@@ -154,9 +162,9 @@ async function renderInventario(contenedor) {
           errorProducto.textContent = 'Completa correctamente todas las filas de la formula';
           return;
         }
-        receta[codigoMateriaPrima] = cantidad;
+        receta.push({ codigo: codigoMateriaPrima, cantidad });
       }
-      if (Object.keys(receta).length === 0) {
+      if (receta.length === 0) {
         errorProducto.textContent = 'Agrega al menos una materia prima a la formula';
         return;
       }

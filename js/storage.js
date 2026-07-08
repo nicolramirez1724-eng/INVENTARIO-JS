@@ -7,10 +7,14 @@ async function getUsuarios() {
 }
 
 async function guardarUsuario(usuario) {
-  await fetch(`${BASE_URL}/usuarios/${usuario.identificacion}.json`, {
+  const respuesta = await fetch(`${BASE_URL}/usuarios/${usuario.identificacion}.json`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(usuario)
   });
+  if (!respuesta.ok) {
+    console.error('Error al guardar usuario', usuario.identificacion, respuesta.status);
+  }
 }
 
 async function eliminarUsuarioDB(identificacion) {
@@ -26,10 +30,14 @@ async function getProductos() {
 }
 
 async function guardarProducto(producto) {
-  await fetch(`${BASE_URL}/productos/${producto.codigo}.json`, {
+  const respuesta = await fetch(`${BASE_URL}/productos/${producto.codigo}.json`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(producto)
   });
+  if (!respuesta.ok) {
+    console.error('Error al guardar producto', producto.codigo, respuesta.status);
+  }
 }
 
 async function eliminarProductoDB(codigo) {
@@ -45,10 +53,14 @@ async function getProducciones() {
 }
 
 async function guardarProduccion(registro) {
-  await fetch(`${BASE_URL}/producciones/${registro.id}.json`, {
+  const respuesta = await fetch(`${BASE_URL}/producciones/${registro.id}.json`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(registro)
   });
+  if (!respuesta.ok) {
+    console.error('Error al guardar produccion', registro.id, respuesta.status);
+  }
 }
 
 async function siguienteConsecutivo() {
@@ -57,6 +69,7 @@ async function siguienteConsecutivo() {
   const siguiente = (actual || 0) + 1;
   await fetch(`${BASE_URL}/configuracion/consecutivo.json`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(siguiente)
   });
   return siguiente;
@@ -87,7 +100,11 @@ async function sembrarDatosIniciales() {
         nombre: 'Galleta Chocolate',
         proveedor: 'Acme Corp',
         stock: 50,
-        receta: { HARINA: 100, MANTEQUILLA: 100, HUEVO: 1 }
+        receta: [
+          { codigo: 'HARINA', cantidad: 100 },
+          { codigo: 'MANTEQUILLA', cantidad: 100 },
+          { codigo: 'HUEVO', cantidad: 1 }
+        ]
       }
     ];
     for (const producto of productosIniciales) {
