@@ -49,7 +49,7 @@ async function eliminarProductoDB(codigo) {
 async function getProducciones() {
   const respuesta = await fetch(`${BASE_URL}/producciones.json`);
   const datos = await respuesta.json();
-  return datos ? Object.values(datos) : [];
+  return datos ? Object.values(datos).filter(p => p && p.codigo) : [];
 }
 
 async function guardarProduccion(registro) {

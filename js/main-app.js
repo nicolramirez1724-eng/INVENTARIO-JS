@@ -10,7 +10,8 @@ async function iniciar() {
   const renderizadores = {
     usuarios: renderUsuarios,
     inventario: renderInventario,
-    produccion: renderProduccion
+    produccion: renderProduccion,
+    reporte: renderReporte
   };
 
   function irASeccion(seccion) {

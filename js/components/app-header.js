@@ -25,6 +25,7 @@ class AppHeader extends HTMLElement {
           <button data-seccion="inventario" class="${seccion === 'inventario' ? 'activo' : ''}">Inventario</button>
           <button data-seccion="produccion" class="${seccion === 'produccion' ? 'activo' : ''}">Produccion</button>
           <button data-seccion="usuarios" class="${seccion === 'usuarios' ? 'activo' : ''}">Usuarios</button>
+          <button data-seccion="reporte" class="${seccion === 'reporte' ? 'activo' : ''}">Reporte</button>
         </nav>
         <div class="usuario-app">
           <div class="datos-usuario">
